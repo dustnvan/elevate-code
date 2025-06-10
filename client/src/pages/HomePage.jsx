@@ -5,7 +5,7 @@ import Services from '../components/Services';
 import Footer from '../components/Footer';
 
 const HomePage = () => {
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
 
   return (
     <div className={darkMode ? 'dark' : ''}>

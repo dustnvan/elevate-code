@@ -87,25 +87,30 @@ const Navbar = ({ darkMode, setDarkMode }) => {
                 transition={{ duration: 0.2 }}
                 ref={dropdownRef}
               >
-                <ul className="text-lg font-semibold flex flex-col [&>li]dark:hover:bg-white [&>li]:hover:bg-black/5 [&>li]:p-3 [&>li]:rounded-lg [&>li]:hover:cursor-pointer">
-                  <a href="null">
-                    <li>Home</li>
-                  </a>
-                  <a href="null">
-                    <li>About</li>
-                  </a>
-                  <a href="null">
-                    <li>Services</li>
-                  </a>
-                  <a href="null">
-                    <li>Work</li>
-                  </a>
-                  <a href="null">
-                    <li>FAQ</li>
-                  </a>
-                  <a href="null">
-                    <li>Reviews</li>
-                  </a>
+                <ul className="text-lg font-semibold flex flex-col [&>li]:hover:bg-white/20 [&>li]:dark:hover:bg-black/5 [&>li]:p-3 [&>li]:rounded-lg [&>li]:hover:cursor-pointer">
+                  <li>
+                    <a href="/">Home</a>
+                  </li>
+
+                  <li>
+                    <a href="/">About</a>
+                  </li>
+
+                  <li>
+                    <a href="/">Services</a>
+                  </li>
+
+                  <li>
+                    <a href="/">Work</a>
+                  </li>
+
+                  <li>
+                    <a href="/">FAQ</a>
+                  </li>
+
+                  <li>
+                    <a href="/">Reviews</a>
+                  </li>
                 </ul>
               </motion.div>
             )}
@@ -117,50 +122,55 @@ const Navbar = ({ darkMode, setDarkMode }) => {
             <Logo width={50} height={50} />
             <div className="w-40">ElevateCode</div>
           </a>
-          <ul className="gap-4  dark-transition dark:text-black text-white text-base [&>li]:hover:cursor-pointer [&>li]dark:hover:bg-white [&>li]:p-1 [&>li]:rounded-lg [&>li]:hover:bg-black/5 hidden lg:flex">
-            <a href="null">
-              <li>Home</li>
-            </a>
-            <a href="null">
-              <li>About</li>
-            </a>
-            <a href="null">
-              <li>Services</li>
-            </a>
-            <a href="null">
-              <li>Work</li>
-            </a>
-            <a href="null">
-              <li>FAQ</li>
-            </a>
-            <a href="null">
-              <li>Reviews</li>
-            </a>
+          <ul className="gap-4  dark-transition dark:text-black text-white text-base [&>li]:cursor-pointer [&>li]:hover:bg-white/20 [&>li]:dark:hover:bg-black/5 [&>li]:p-1 [&>li]:rounded-lg  hidden lg:flex">
+            <li>
+              <a href="/">Home</a>
+            </li>
+
+            <li>
+              <a href="/">About</a>
+            </li>
+
+            <li>
+              <a href="/">Services</a>
+            </li>
+
+            <li>
+              <a href="/">Work</a>
+            </li>
+
+            <li>
+              <a href="/">FAQ</a>
+            </li>
+
+            <li>
+              <a href="/">Reviews</a>
+            </li>
           </ul>
           <div className="flex items-center gap-5 ">
             <span className="hidden sm:inline-block">
               <AnimatedButton text="Contact Us" />
             </span>
             <button
-              className="bg-black/5 rounded-lg p-4 lg:hidden"
+              className="bg-white/20 dark:bg-black/5 rounded-lg p-4 lg:hidden cursor-pointer"
               onClick={() => setDropDownOpen((prev) => !prev)}
               ref={closeButton}
             >
-              <div className="flex flex-col space-y-[3px] justify-center relative w-6 h-6">
+              <div className="flex flex-col space-y-[3px] justify-center relative w-6 h-6 [&>span]:dark:bg-black [&>span]:bg-white">
                 <span
-                  className={`bg-black h-[3px] w-full transition duration-300 ${
+                  className={`h-[3px] w-full transition duration-300 ${
                     dropDownOpen
                       ? 'absolute top-1/2 translate-y-1/2 rotate-45 '
                       : ''
                   }`}
                 ></span>
                 <span
-                  className={`bg-black h-[3px] w-full transition duration-300 ${
+                  className={`h-[3px] w-full transition duration-300 ${
                     dropDownOpen ? 'hidden' : ''
                   }`}
                 ></span>
                 <span
-                  className={`bg-black h-[3px] w-full transition duration-300 ${
+                  className={`h-[3px] w-full transition duration-300 ${
                     dropDownOpen
                       ? 'absolute top-1/2 translate-y-1/2 -rotate-45'
                       : ''

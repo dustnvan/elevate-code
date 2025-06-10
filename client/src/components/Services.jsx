@@ -24,26 +24,57 @@ const Services = () => {
   const scrollRef = useRef(null);
   const imagesList = Object.values(images);
   const [width, setWidth] = useState(0);
-  const coolDownRef = useRef(false);
   const [index, setIndex] = useState(0);
+  const CLONES = 1; // on one side
 
-  const [dragging, setDragging] = useState(false);
-  const draggingRef = useRef(false);
   const { events } = useDraggable(scrollRef, {
     decayRate: 0.95,
     safeDisplacement: 0,
   });
   const [imageLocations, setImageLocations] = useState([]);
-  const scrolledMidRef = useRef(false);
   const indexRef = useRef(index);
+  const scrollStopTimeout = useRef(null);
+  const lastScroll = useRef(0);
 
-  // Keep ref in sync with state
+  const refFlags = useRef({
+    animatingSnap: false,
+    mouseDragging: false,
+    mobileDragging: false,
+    navButtonCoolDown: false,
+    scrolledMid: false,
+  });
+
+  const handleScroll = useCallback(() => {
+    if (!scrollRef.current) return;
+
+    const imageWidth = width / imagesList.length;
+
+    //
+
+    // if (!refFlags.current.mobileDragging) {
+    const scroll = scrollRef.current.scrollLeft;
+    const wrappedScroll = wrap(CLONES * width, width + width * CLONES, scroll);
+    if (wrappedScroll !== scroll) {
+      console.log('wrapped', scroll, wrappedScroll);
+    }
+
+    if (!refFlags.current.mobileDragging) {
+      scrollRef.current.scrollLeft = wrappedScroll;
+    }
+
+    setIndex(Math.round(wrappedScroll / imageWidth));
+  }, [width, scrollRef]);
+
+  // keep ref in sync with state
   useEffect(() => {
     indexRef.current = index;
   }, [index]);
 
   const allImages = useMemo(
-    () => [...imagesList, ...imagesList, ...imagesList],
+    () =>
+      Array(CLONES * 2 + 1)
+        .fill(imagesList)
+        .flat(),
     [imagesList]
   );
 
@@ -52,6 +83,7 @@ const Services = () => {
     const imageWidth = width / imagesList.length;
 
     const imageLocs = allImages.map((_, i) => i * imageWidth);
+    console.log(imageLocs);
 
     setImageLocations(imageLocs);
     scrollRef.current.scrollLeft = imageLocs[index];
@@ -62,15 +94,29 @@ const Services = () => {
     scrollRef.current.scrollLeft = imageLocations[index];
   }, [imageLocations]);
 
-  //Snap at the end of inertia from drag
-  const scrollStopTimeout = useRef(null);
-  const lastScroll = useRef(0);
-  const handleDragEnd = (e) => {
-    if (!dragging) return;
-    if (scrollStopTimeout.current) clearTimeout(scrollStopTimeout.current);
-    setDragging(false);
-    draggingRef.current = true;
+  const customEvents = !isMobile
+    ? {
+        ...events,
+        onMouseDown: (e) => {
+          refFlags.current.mouseDragging = true;
+          if (events.onMouseDown) events.onMouseDown(e);
+        },
+      }
+    : {
+        ...events,
+        onTouchStart: (e) => {
+          console.log('drag set true');
+          refFlags.current.mobileDragging = true;
+        },
+      };
 
+  //snap at the end of inertia from drag
+  const handleMouseDragEnd = (e) => {
+    if (!refFlags.current.mouseDragging) return;
+    if (scrollStopTimeout.current) clearTimeout(scrollStopTimeout.current);
+    refFlags.current.mouseDragging = false;
+
+    refFlags.current.animatingSnap = true;
     const checkIfScrollStopped = () => {
       const currentScroll = scrollRef.current.scrollLeft;
       let controls;
@@ -83,7 +129,7 @@ const Services = () => {
             scrollRef.current.scrollLeft = latest;
           },
         });
-        controls.then(() => (draggingRef.current = false));
+        controls.then(() => (refFlags.current.animatingSnap = false));
       } else {
         lastScroll.current = currentScroll;
         scrollStopTimeout.current = setTimeout(checkIfScrollStopped, 20);
@@ -94,39 +140,31 @@ const Services = () => {
     scrollStopTimeout.current = setTimeout(checkIfScrollStopped, 20);
   };
 
-  const customEvents = !isMobile
-    ? {
-        ...events,
-        onMouseDown: (e) => {
-          setDragging(true);
-          if (events.onMouseDown) events.onMouseDown(e);
-        },
-      }
-    : {};
+  const handleMobileDragEnd = () => {
+    refFlags.current.mobileDragging = false;
+    const scroll = scrollRef.current.scrollLeft;
+    scrollRef.current.scrollLeft = wrap(
+      CLONES * width,
+      width + width * CLONES,
+      scroll
+    );
+  };
 
   useEffect(() => {
-    if (!dragging) return;
     // scrollRef.mouseUp wouldn't trigger if mouse start on scroll and end off scroll
-    window.addEventListener('mouseup', handleDragEnd);
+    if (refFlags.current.mouseDragging) {
+      window.addEventListener('mouseup', handleMouseDragEnd);
+    }
+
+    window.addEventListener('touchend', handleMobileDragEnd);
+    window.addEventListener('touchcancel', handleMobileDragEnd);
 
     return () => {
-      window.removeEventListener('mouseup', handleDragEnd);
+      window.removeEventListener('mouseup', handleMouseDragEnd);
+      window.removeEventListener('touchend', handleMobileDragEnd);
+      window.removeEventListener('touchcancel', handleMobileDragEnd);
     };
-  }, [dragging, handleDragEnd]);
-
-  const handleScroll = useCallback(() => {
-    if (!scrollRef.current) return;
-
-    const imageWidth = width / imagesList.length;
-
-    // infinite loop mechanic
-    const scroll = scrollRef.current.scrollLeft;
-
-    if (scroll <= width * 0.5 || scroll >= width * 2.5) {
-      scrollRef.current.scrollLeft = wrap(width, width * 2, scroll);
-    }
-    setIndex(Math.round(scrollRef.current.scrollLeft / imageWidth));
-  }, [width, scrollRef]);
+  }, [handleMouseDragEnd, handleMobileDragEnd]);
 
   useEffect(() => {
     if (!imageRef.current || !scrollRef.current) return;
@@ -145,23 +183,26 @@ const Services = () => {
 
   // Initial scroll to mid
   useEffect(() => {
-    if (!scrollRef.current || width === 0 || scrolledMidRef.current) return;
+    if (!scrollRef.current || width === 0 || refFlags.current.scrolledMid)
+      return;
+    console.log('scroll mid', width);
+    scrollRef.current.scrollLeft = CLONES * width;
 
-    scrollRef.current.scrollLeft = width;
-
-    scrolledMidRef.current = true;
+    refFlags.current.scrolledMid = true;
   }, [width]);
 
   const handleLeftScroll = () => {
     if (
-      !scrollRef.current ||
-      draggingRef.current ||
-      !imageLocations.length ||
-      coolDownRef.current
+      (!scrollRef.current ||
+        refFlags.current.animatingSnap ||
+        !imageLocations.length ||
+        refFlags,
+      current,
+      refFlags.current.navButtonCoolDown)
     )
       return;
 
-    coolDownRef.current = true;
+    refFlags.current.navButtonCoolDown = true;
     const container = scrollRef.current;
 
     const target = imageLocations[indexRef.current - 1];
@@ -170,26 +211,30 @@ const Services = () => {
       duration: 0.2,
       ease: 'easeInOut',
       onUpdate: (latest) => {
-        container.scrollLeft = wrap(width, width * 2, latest);
+        container.scrollLeft = wrap(
+          CLONES * width,
+          width + CLONES * width,
+          latest
+        );
       },
     });
 
     controls.then(() => {
-      coolDownRef.current = false;
+      refFlags.current.navButtonCoolDown = false;
     });
   };
 
   const handleRightScroll = () => {
     if (
       !scrollRef.current ||
-      draggingRef.current ||
+      refFlags.current.animatingSnap ||
       !imageLocations.length ||
-      coolDownRef.current
+      refFlags.current.navButtonCoolDown
     )
       return;
 
     const container = scrollRef.current;
-    coolDownRef.current = true;
+    refFlags.current.navButtonCoolDown = true;
 
     const target = imageLocations[indexRef.current + 1];
 
@@ -197,12 +242,12 @@ const Services = () => {
       duration: 0.2,
       ease: 'easeInOut',
       onUpdate: (latest) => {
-        container.scrollLeft = wrap(width, width * 2, latest);
+        container.scrollLeft = wrap(width, width + width * CLONES, latest);
       },
     });
 
     controls.then(() => {
-      coolDownRef.current = false;
+      refFlags.current.navButtonCoolDown = false;
     });
   };
 
@@ -249,7 +294,7 @@ const Services = () => {
           </div>
           <div className="select-none max-w-250 order-first sm:order-last">
             <div
-              className={`overflow-auto scrollbar-hide flex cursor-grab`}
+              className={`overflow-auto scrollbar-hide flex cursor-grab overscroll-none`}
               ref={scrollRef}
               onScroll={handleScroll}
               {...customEvents}

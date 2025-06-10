@@ -9,8 +9,8 @@ const Hero = () => {
     <div className="bg-black h-screen flex items-center">
       <div className="w-full max-w-400 mx-auto">
         <div className="px-4 lg:px-20 xl:px-40 flex text-white justify-between">
-          <div className=" max-w-200">
-            <h2 className="text-4xl lg:text-6xl/18">
+          <div className="mt-20 max-w-200">
+            <h2 className="text-5xl/15 md:text-7xl/20">
               Helping you go from <b className="font-weight-900">idea</b> to{' '}
               <b className="font-weight-900">impact</b>
             </h2>

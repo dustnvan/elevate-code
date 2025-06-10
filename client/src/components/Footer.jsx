@@ -28,9 +28,10 @@ const Footer = () => {
     <div className="p-5 sm:p-20 space-y-20 dark-transition dark:bg-white dark:text-black bg-black text-white max-w-400 mx-auto">
       <header className="flex flex-col items-center bg-black gap-8 sm:gap-10 max-w-250 mx-auto p-5 py-10 sm:p-20 rounded-xl bg-white dark:bg-black dark-transition text-black dark:text-white">
         <h1 className="text-5xl sm:text-7xl font-bold">Have an idea?</h1>
-        <p className="text-lg sm:text-xl max-w-150">
-          If you feel like we're a good fit, please reach out so we can get to
-          know each other and discuss your upcoming project.
+        <p className="text-lg sm:text-xl max-w-180 text-center">
+          Let's bring your ideas to life! If you are interested in discussing
+          your upcoming project and how our software consulting services can
+          help, contact us today.
         </p>
         <AnimatedButton text="Contact Us" />
       </header>
@@ -39,7 +40,7 @@ const Footer = () => {
         <div className="flex lg:flex-row flex-col gap-20 items-center justify-between">
           <div className="flex flex-col gap-5 max-w-100">
             <span
-              href="null"
+              href="/"
               className="flex items-center gap-1 dark:text-black text-white dark-transition font-bold text-2xl"
             >
               <Logo width={50} height={50} />
@@ -60,7 +61,7 @@ const Footer = () => {
             <div className="flex gap-5">
               <a
                 href="mailto:"
-                className="underline p-1 hover:bg-purple text-lg rounded-sm bg-black/5"
+                className="underline p-1 hover-supported:hover:bg-purple text-lg rounded-sm bg-black/5"
               >
                 {EMAIL}
               </a>
@@ -84,33 +85,33 @@ const Footer = () => {
               </a>
             </p>
           </div>
-          <nav className="grid grid-cols-1 md:grid-cols-3 gap-y-10 gap-x-20 self-start">
+          <nav className="grid grid-cols-1 md:grid-cols-3 gap-y-10 gap-x-20 self-start [&_a]:hover:underline">
             <div>
               <h2 className="font-semibold text-xl mb-5 ">SERVICES</h2>
-              <ul className="space-y-5 [&_a:hover]:underline">
+              <ul className="space-y-5 ">
                 <li>
-                  <a href="null">Code Reviews </a>
+                  <a href="/">Code Reviews </a>
                 </li>
                 <li>
-                  <a href="null">Cloud & DevOps</a>
+                  <a href="/">Cloud & DevOps</a>
                 </li>
                 <li>
-                  <a href="null">Prototyping </a>
+                  <a href="/">Prototyping </a>
                 </li>
                 <li>
-                  <a href="null">Custom Software Development</a>
+                  <a href="/">Custom Software Development</a>
                 </li>
                 <li>
-                  <a href="null">Technical Strategy </a>
+                  <a href="/">Technical Strategy </a>
                 </li>
                 <li>
-                  <a href="null">UI/UX Design</a>
+                  <a href="/">UI/UX Design</a>
                 </li>
               </ul>
             </div>
             <div>
               <h2 className="font-semibold text-xl mb-5">COMPANY</h2>
-              <ul className="space-y-5 [&_a:hover]:underline">
+              <ul className="space-y-5">
                 <li>
                   <a href="/">About Us</a>
                 </li>
@@ -143,7 +144,7 @@ const Footer = () => {
             </div>
             <div>
               <h2 className="font-semibold text-xl mb-5">POLICIES</h2>
-              <ul className="space-y-5 [&_a:hover]:underline">
+              <ul className="space-y-5">
                 <li>
                   <a href="/">Privacy Policy</a>
                 </li>

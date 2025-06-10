@@ -14,7 +14,7 @@ const AnimatedButton = ({ text }) => {
   return (
     <button
       ref={buttonRef}
-      className="bg-purple py-1 pl-5 pr-1 rounded-lg text-white group cursor-pointer relative overflow-hidden"
+      className="bg-purple p-2 pl-7 sm:p-1 sm:pl-5 rounded-lg text-white group cursor-pointer relative overflow-hidden"
     >
       <span
         className={`absolute bg-black/90 group-hover:-translate-y-1/2 top-0 left-1/2 -translate-x-1/2 -translate-y-1/1 rounded-full transition duration-1000 ease-[cubic-bezier(1,-0.1,.35,.85)] `}

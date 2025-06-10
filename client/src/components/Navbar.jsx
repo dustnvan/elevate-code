@@ -19,10 +19,20 @@ const Navbar = ({ darkMode, setDarkMode }) => {
   const [dropDownOpen, setDropDownOpen] = useState(false);
 
   const dropdownRef = useRef(null);
+  const closeButton = useRef(null);
+
+  useEffect(() => {
+    if (hide) setDropDownOpen(false);
+  }, [hide]);
 
   useEffect(() => {
     function handleClickOutside(event) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      if (closeButton.current.contains(event.target)) {
+        return;
+      } else if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target)
+      ) {
         setDropDownOpen(false);
       }
     }
@@ -78,22 +88,22 @@ const Navbar = ({ darkMode, setDarkMode }) => {
                 ref={dropdownRef}
               >
                 <ul className="text-lg font-semibold flex flex-col [&>li]dark:hover:bg-white [&>li]:hover:bg-black/5 [&>li]:p-3 [&>li]:rounded-lg [&>li]:hover:cursor-pointer">
-                  <a href="">
+                  <a href="null">
                     <li>Home</li>
                   </a>
-                  <a href="">
+                  <a href="null">
                     <li>About</li>
                   </a>
-                  <a href="">
+                  <a href="null">
                     <li>Services</li>
                   </a>
-                  <a href="">
+                  <a href="null">
                     <li>Work</li>
                   </a>
-                  <a href="">
+                  <a href="null">
                     <li>FAQ</li>
                   </a>
-                  <a href="">
+                  <a href="null">
                     <li>Reviews</li>
                   </a>
                 </ul>
@@ -108,22 +118,22 @@ const Navbar = ({ darkMode, setDarkMode }) => {
             <div className="w-40">ElevateCode</div>
           </a>
           <ul className="gap-4  dark-transition dark:text-black text-white text-base [&>li]:hover:cursor-pointer [&>li]dark:hover:bg-white [&>li]:p-1 [&>li]:rounded-lg [&>li]:hover:bg-black/5 hidden lg:flex">
-            <a href="">
+            <a href="null">
               <li>Home</li>
             </a>
-            <a href="">
+            <a href="null">
               <li>About</li>
             </a>
-            <a href="">
+            <a href="null">
               <li>Services</li>
             </a>
-            <a href="">
+            <a href="null">
               <li>Work</li>
             </a>
-            <a href="">
+            <a href="null">
               <li>FAQ</li>
             </a>
-            <a href="">
+            <a href="null">
               <li>Reviews</li>
             </a>
           </ul>
@@ -134,6 +144,7 @@ const Navbar = ({ darkMode, setDarkMode }) => {
             <button
               className="bg-black/5 rounded-lg p-4 lg:hidden"
               onClick={() => setDropDownOpen((prev) => !prev)}
+              ref={closeButton}
             >
               <div className="flex flex-col space-y-[3px] justify-center relative w-6 h-6">
                 <span

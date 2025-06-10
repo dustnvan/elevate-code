@@ -39,7 +39,7 @@ const Footer = () => {
         <div className="flex lg:flex-row flex-col gap-20 items-center justify-between">
           <div className="flex flex-col gap-5 max-w-100">
             <span
-              href=""
+              href="null"
               className="flex items-center gap-1 dark:text-black text-white dark-transition font-bold text-2xl"
             >
               <Logo width={50} height={50} />
@@ -89,22 +89,22 @@ const Footer = () => {
               <h2 className="font-semibold text-xl mb-5 ">SERVICES</h2>
               <ul className="space-y-5 [&_a:hover]:underline">
                 <li>
-                  <a href="">Code Reviews </a>
+                  <a href="null">Code Reviews </a>
                 </li>
                 <li>
-                  <a href="">Cloud & DevOps</a>
+                  <a href="null">Cloud & DevOps</a>
                 </li>
                 <li>
-                  <a href="">Prototyping </a>
+                  <a href="null">Prototyping </a>
                 </li>
                 <li>
-                  <a href="">Custom Software Development</a>
+                  <a href="null">Custom Software Development</a>
                 </li>
                 <li>
-                  <a href="">Technical Strategy </a>
+                  <a href="null">Technical Strategy </a>
                 </li>
                 <li>
-                  <a href="">UI/UX Design</a>
+                  <a href="null">UI/UX Design</a>
                 </li>
               </ul>
             </div>

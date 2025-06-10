@@ -207,18 +207,18 @@ const Services = () => {
   };
 
   return (
-    <div className=" bg-white dark-transition dark:bg-black text-black dark:text-white pb-50">
-      <div className="max-w-350 mx-auto">
+    <div className=" bg-white dark-transition dark:bg-black text-black dark:text-white py-50">
+      <div className="max-w-350 mx-auto px-5 xl:px-20">
         <header>
           <h1 className="text-5xl mb-5">Our main services</h1>
           <p className="text-xl mb-10">
-            Discover the services we offer that help digitally transform our
-            clients businesses. Our core agency service offering includes web
-            development, branding, SEO and digital paid ads and some other
-            additional services too.
+            We help businesses evolve through purposeful design and smart
+            technology. Whether launching something new or optimizing what's
+            already working, our team delivers solutions that make a lasting
+            impact.
           </p>
         </header>
-        <section className="flex justify-between flex-col gap-10 lg:flex-row">
+        <section className="flex justify-between flex-col gap-10 xl:gap-50 lg:flex-row">
           <div className="flex flex-row lg:flex-col justify-start lg:justify-between gap-8 items-center">
             <div className="flex text-8xl hidden sm:flex select-none">
               <motion.h2>{wrap(0, services.length, index) + 1}</motion.h2>

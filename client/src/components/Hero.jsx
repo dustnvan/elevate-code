@@ -11,8 +11,8 @@ const Hero = () => {
         <div className="px-4 lg:px-20 xl:px-40 flex text-white justify-between">
           <div className=" max-w-200">
             <h2 className="text-4xl lg:text-6xl/18">
-              Helping startups go from <b className="font-weight-900">idea</b>{' '}
-              to <b className="font-weight-900">impact</b>
+              Helping you go from <b className="font-weight-900">idea</b> to{' '}
+              <b className="font-weight-900">impact</b>
             </h2>
             <div className="mt-10 flex sm:flex-row flex-col gap-10 items-start sm:items-center">
               <AnimatedButton text="Get In Touch" />

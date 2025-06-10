@@ -9,7 +9,7 @@ import {
   motion,
   AnimatePresence,
 } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 const Navbar = ({ darkMode, setDarkMode }) => {
   const { scrollY } = useScroll();
@@ -17,6 +17,19 @@ const Navbar = ({ darkMode, setDarkMode }) => {
   const [hide, setHide] = useState(false);
   const [expand, setExpand] = useState(true);
   const [dropDownOpen, setDropDownOpen] = useState(false);
+
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropDownOpen(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   useMotionValueEvent(scrollY, 'change', (current) => {
     const diff = current - scrollY.getPrevious();
@@ -62,6 +75,7 @@ const Navbar = ({ darkMode, setDarkMode }) => {
                 animate={{ opacity: 1, scaleY: '100%', translateY: 0 }}
                 exit={{ opacity: 0, scaleY: 0, translateY: '-10%' }}
                 transition={{ duration: 0.2 }}
+                ref={dropdownRef}
               >
                 <ul className="text-lg font-semibold flex flex-col [&>li]dark:hover:bg-white [&>li]:hover:bg-black/5 [&>li]:p-3 [&>li]:rounded-lg [&>li]:hover:cursor-pointer">
                   <a href="">

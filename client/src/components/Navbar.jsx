@@ -64,12 +64,24 @@ const Navbar = ({ darkMode, setDarkMode }) => {
                 transition={{ duration: 0.2 }}
               >
                 <ul className="text-lg font-semibold flex flex-col [&>li]dark:hover:bg-white [&>li]:hover:bg-black/5 [&>li]:p-3 [&>li]:rounded-lg [&>li]:hover:cursor-pointer">
-                  <li>Home</li>
-                  <li>About</li>
-                  <li>Services</li>
-                  <li>Work</li>
-                  <li>FAQ</li>
-                  <li>Reviews</li>
+                  <a href="">
+                    <li>Home</li>
+                  </a>
+                  <a href="">
+                    <li>About</li>
+                  </a>
+                  <a href="">
+                    <li>Services</li>
+                  </a>
+                  <a href="">
+                    <li>Work</li>
+                  </a>
+                  <a href="">
+                    <li>FAQ</li>
+                  </a>
+                  <a href="">
+                    <li>Reviews</li>
+                  </a>
                 </ul>
               </motion.div>
             )}
@@ -82,12 +94,24 @@ const Navbar = ({ darkMode, setDarkMode }) => {
             <div className="w-40">ElevateCode</div>
           </a>
           <ul className="gap-4  dark-transition dark:text-black text-white text-base [&>li]:hover:cursor-pointer [&>li]dark:hover:bg-white [&>li]:p-1 [&>li]:rounded-lg [&>li]:hover:bg-black/5 hidden lg:flex">
-            <li>Home</li>
-            <li>About</li>
-            <li>Services</li>
-            <li>Work</li>
-            <li>FAQ</li>
-            <li>Reviews</li>
+            <a href="">
+              <li>Home</li>
+            </a>
+            <a href="">
+              <li>About</li>
+            </a>
+            <a href="">
+              <li>Services</li>
+            </a>
+            <a href="">
+              <li>Work</li>
+            </a>
+            <a href="">
+              <li>FAQ</li>
+            </a>
+            <a href="">
+              <li>Reviews</li>
+            </a>
           </ul>
           <div className="flex items-center gap-5 ">
             <span className="hidden sm:inline-block">

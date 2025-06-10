@@ -16,5 +16,5 @@ body {
   }
 }
 
-@custom-variant hover (&:hover);
+/* @custom-variant hover (&:hover); */
 @custom-variant dark (&:where(.dark, .dark *));

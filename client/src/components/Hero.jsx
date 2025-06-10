@@ -7,18 +7,24 @@ import Founder from './Founder';
 const Hero = () => {
   return (
     <div className="bg-black h-screen flex items-center">
-      <div className="w-full">
-        <div className="px-20 flex text-white justify-between">
+      <div className="w-full max-w-400 mx-auto">
+        <div className="px-4 lg:px-20 xl:px-40 flex text-white justify-between">
           <div className=" max-w-200">
-            <h2 className="text-6xl/18">
+            <h2 className="text-4xl lg:text-6xl/18">
               Helping startups go from <b className="font-weight-900">idea</b>{' '}
               to <b className="font-weight-900">impact</b>
             </h2>
-            <div className="mt-10 flex gap-10 items-center">
+            <div className="mt-10 flex sm:flex-row flex-col gap-10 items-start sm:items-center">
               <AnimatedButton text="Get In Touch" />
+              <img
+                src={reviews}
+                width={150}
+                height={80}
+                className="h-12 xl:hidden"
+              />
             </div>
           </div>
-          <div className="self-end max-w-100">
+          <div className="hidden xl:block self-end max-w-100">
             <p className="text-base/8">
               We deliver software solutions and technical consulting to cut
               delays, reduce costs, and help startups launch faster with clean,
@@ -49,7 +55,7 @@ const Hero = () => {
                 </div>
               </div>
               <p className="text-xs">Loved by 500+ Founders</p>
-              <img src={reviews} className="h-12" />
+              <img src={reviews} width={150} height={80} className="h-12" />
             </div>
           </div>
         </div>

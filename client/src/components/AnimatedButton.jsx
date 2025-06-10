@@ -1,10 +1,27 @@
 import DiagonalArrow from '../assets/icons/diagonalArrow.svg?react';
+import { useRef, useEffect, useState } from 'react';
 
-const AnimatedButton = ({ text, effectSize = 50 }) => {
+const AnimatedButton = ({ text }) => {
+  const buttonRef = useRef(null);
+  const [circleSize, setCircleSize] = useState(0);
+
+  useEffect(() => {
+    if (buttonRef.current) {
+      setCircleSize(buttonRef.current.offsetWidth * 1.5);
+    }
+  }, [buttonRef]);
+
   return (
-    <button className="bg-purple py-1 pl-5 pr-1 rounded-lg text-white group cursor-pointer relative overflow-hidden">
+    <button
+      ref={buttonRef}
+      className="bg-purple py-1 pl-5 pr-1 rounded-lg text-white group cursor-pointer relative overflow-hidden"
+    >
       <span
-        className={`w-${effectSize}  h-${effectSize} absolute bg-black/90 group-hover:-translate-y-1/2 top-0 left-1/2 -translate-x-1/2 -translate-y-1/1 rounded-full transition duration-1000 ease-[cubic-bezier(1,-0.1,.35,.85)] `}
+        className={`absolute bg-black/90 group-hover:-translate-y-1/2 top-0 left-1/2 -translate-x-1/2 -translate-y-1/1 rounded-full transition duration-1000 ease-[cubic-bezier(1,-0.1,.35,.85)] `}
+        style={{
+          width: `${circleSize}px`,
+          height: `${circleSize}px`,
+        }}
       ></span>
       <span className="flex justify-center items-center gap-3 z-10 relative">
         {text}

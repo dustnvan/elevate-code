@@ -1,6 +1,7 @@
 import AnimatedButton from './AnimatedButton';
 import reviews from '../assets/images/reviews.png';
 import Copy from '../assets/icons/copy.svg?react';
+import Logo from '../assets/icons/logo.svg?react';
 
 const copyToClipboard = async (text) => {
   try {
@@ -12,10 +13,10 @@ const copyToClipboard = async (text) => {
 
 const Footer = () => {
   return (
-    <div className="p-20 space-y-20 dark:bg-black dark-transition text-black dark:text-white">
-      <header className="flex flex-col items-center bg-black text-white gap-10 max-w-250 mx-auto px-20 rounded-xl py-20">
-        <h1 className="text-7xl font-bold">Have an idea?</h1>
-        <p className="text-xl max-w-150">
+    <div className="p-5 sm:p-20 space-y-20 dark-transition dark:bg-white dark:text-black bg-black text-white max-w-400 mx-auto">
+      <header className="flex flex-col items-center bg-black gap-8 sm:gap-10 max-w-250 mx-auto p-5 py-10 sm:p-20 rounded-xl bg-white dark:bg-black dark-transition text-black dark:text-white">
+        <h1 className="text-5xl sm:text-7xl font-bold">Have an idea?</h1>
+        <p className="text-lg sm:text-xl max-w-150">
           If you feel like we're a good fit, please reach out so we can get to
           know each other and discuss your upcoming project.
         </p>
@@ -23,15 +24,18 @@ const Footer = () => {
       </header>
 
       <footer>
-        <div className="flex gap-30 items-center justify-between">
+        <div className="flex lg:flex-row flex-col gap-20 items-center justify-between">
           <div className="flex flex-col gap-5 max-w-100">
-            <h1>
-              <img src="https://placehold.co/180x40" />
-            </h1>
+            <a
+              href=""
+              className="flex items-center gap-1 dark:text-black text-white dark-transition font-bold text-2xl"
+            >
+              <Logo width={50} height={50} />
+              ElevateCode
+            </a>
             <p>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Perspiciatis facilis deleniti, sint delectus,repudiandae
-              voluptatibus doloribus odio labore commodi ut.
+              Empower your business with innovative software solutions that
+              drive growth and efficiency.
             </p>
             <form className="flex gap-5 flex-col">
               <input
@@ -39,14 +43,14 @@ const Footer = () => {
                 placeholder="Enter Your Email"
                 className="bg-black text-white p-5 inline-block rounded-lg w-full"
               ></input>
-              <AnimatedButton text="Subscribe for updates" effectSize={110} />
+              <AnimatedButton text="Subscribe for updates" />
             </form>
             <div className="flex gap-5">
               <a
                 href="mailto:"
                 className="underline p-1 hover:bg-purple text-lg rounded-sm bg-black/5"
               >
-                hello@gmail.com
+                elevatecode@code.com
               </a>
               <button
                 onClick={() => {
@@ -69,90 +73,81 @@ const Footer = () => {
                 1234567890
               </a>
             </p>
-            <img src={reviews} width={30} height={20} />
           </div>
-          <nav className="grid grid-cols-3 gap-x-20">
-            <div className="">
-              <h2 className="font-semibold text-lg mb-5">Services</h2>
-              <ul className="space-y-5 *:hover:underline">
+          <nav className="grid grid-cols-1 md:grid-cols-3 gap-y-10 gap-x-20 self-start">
+            <div>
+              <h2 className="font-semibold text-xl mb-5 ">SERVICES</h2>
+              <ul className="space-y-5 [&_a:hover]:underline">
                 <li>
-                  <a href="">Code Reviews & Security Audits</a>
+                  <a href="">Code Reviews </a>
                 </li>
                 <li>
                   <a href="">Cloud & DevOps</a>
                 </li>
                 <li>
-                  <a href="">Prototyping & MVP Validation</a>
+                  <a href="">Prototyping </a>
                 </li>
                 <li>
                   <a href="">Custom Software Development</a>
                 </li>
                 <li>
-                  <a href="">Technical Strategy & Architecture</a>
+                  <a href="">Technical Strategy </a>
                 </li>
                 <li>
                   <a href="">UI/UX Design</a>
                 </li>
               </ul>
             </div>
-            <div className="">
-              <h2 className="font-semibold text-lg mb-5">Company</h2>
-              <ul className="space-y-5 *:hover:underline">
+            <div>
+              <h2 className="font-semibold text-xl mb-5">COMPANY</h2>
+              <ul className="space-y-5 [&_a:hover]:underline">
                 <li>
-                  <a href="">About</a>
+                  <a href="/">About Us</a>
                 </li>
                 <li>
-                  <a href="">Services</a>
+                  <a href="/">Careers</a>
                 </li>
                 <li>
-                  <a href="">Work</a>
+                  <a href="/">Team</a>
                 </li>
                 <li>
-                  <a href="">Insights</a>
+                  <a href="/">Mission & Vision</a>
                 </li>
                 <li>
-                  <a href="">FAQs</a>
+                  <a href="/">Sustainability & Impact</a>
                 </li>
                 <li>
-                  <a href="">Reviews</a>
+                  <a href="/">Partners & Affiliates</a>
                 </li>
                 <li>
-                  <a href="">Pay Monthly</a>
+                  <a href="/">Events & Webinars</a>
+                </li>
+
+                <li>
+                  <a href="/">Investor Relations</a>
                 </li>
                 <li>
-                  <a href="">Contact Us</a>
-                </li>
-                <li>
-                  <a href="">Start your project</a>
+                  <a href="/">Contact Us</a>
                 </li>
               </ul>
             </div>
-            <div className="">
-              <h2 className="font-semibold text-lg mb-5">Policies</h2>
-              <ul className="space-y-5 *:hover:underline">
+            <div>
+              <h2 className="font-semibold text-xl mb-5">POLICIES</h2>
+              <ul className="space-y-5 [&_a:hover]:underline">
                 <li>
-                  <a href="">Cookies</a>
+                  <a href="/">Privacy Policy</a>
                 </li>
                 <li>
-                  <a href="">Privacy</a>
+                  <a href="/">Terms of Service</a>
                 </li>
                 <li>
-                  <a href="">GDPR</a>
+                  <a href="/">Cookie Policy</a>
                 </li>
                 <li>
-                  <a href="">Terms & Conditions</a>
+                  <a href="/">Accessibility Policy</a>
                 </li>
                 <li>
-                  <a href="">Accessibility</a>
-                </li>
-                <li>
-                  <a href="">Modern Slavery Act</a>
-                </li>
-                <li>
-                  <a href="">Recruitment Policy</a>
-                </li>
-                <li>
-                  <a href="">Sitemap</a>
+                  <a href="/">Refund Policy</a>
                 </li>
               </ul>
             </div>

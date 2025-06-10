@@ -1,7 +1,7 @@
 import AnimatedButton from './AnimatedButton';
-import reviews from '../assets/images/reviews.png';
 import Copy from '../assets/icons/copy.svg?react';
 import Logo from '../assets/icons/logo.svg?react';
+import { useState } from 'react';
 
 const copyToClipboard = async (text) => {
   try {
@@ -12,6 +12,18 @@ const copyToClipboard = async (text) => {
 };
 
 const Footer = () => {
+  const EMAIL = 'elevatecode@code.com';
+  const [copyMsg, setCopyMsg] = useState('Copy');
+
+  const handleCopy = () => {
+    if (copyMsg === 'Copied!') return;
+    copyToClipboard(EMAIL);
+    setCopyMsg('Copied!');
+    setTimeout(() => {
+      setCopyMsg('Copy');
+    }, 3000);
+  };
+
   return (
     <div className="p-5 sm:p-20 space-y-20 dark-transition dark:bg-white dark:text-black bg-black text-white max-w-400 mx-auto">
       <header className="flex flex-col items-center bg-black gap-8 sm:gap-10 max-w-250 mx-auto p-5 py-10 sm:p-20 rounded-xl bg-white dark:bg-black dark-transition text-black dark:text-white">
@@ -26,13 +38,13 @@ const Footer = () => {
       <footer>
         <div className="flex lg:flex-row flex-col gap-20 items-center justify-between">
           <div className="flex flex-col gap-5 max-w-100">
-            <a
+            <span
               href=""
               className="flex items-center gap-1 dark:text-black text-white dark-transition font-bold text-2xl"
             >
               <Logo width={50} height={50} />
               ElevateCode
-            </a>
+            </span>
             <p>
               Empower your business with innovative software solutions that
               drive growth and efficiency.
@@ -50,17 +62,15 @@ const Footer = () => {
                 href="mailto:"
                 className="underline p-1 hover:bg-purple text-lg rounded-sm bg-black/5"
               >
-                elevatecode@code.com
+                {EMAIL}
               </a>
               <button
-                onClick={() => {
-                  copyToClipboard('hello@gmail.com');
-                }}
+                onClick={handleCopy}
                 className="cursor-pointer hover:text-purple"
               >
                 <span className="flex items-center text-sm">
                   <Copy width={40} height={40} />
-                  Copy
+                  {copyMsg}
                 </span>
               </button>
             </div>

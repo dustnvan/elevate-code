@@ -10,19 +10,18 @@ const images = import.meta.glob('../assets/images/services/*.png', {
   import: 'default',
 });
 
-const Services = () => {
-  const services = [
-    'Code Reviews',
-    'Cloud & DevOps',
-    'Prototyping',
-    'Custom Software Development',
-    'Technical Strategy',
-    'UI/UX Design',
-  ];
+const services = [
+  'Code Reviews',
+  'Cloud & DevOps',
+  'Prototyping',
+  'Custom Software Development',
+  'Technical Strategy',
+  'UI/UX Design',
+];
 
+const Services = () => {
   const imageRef = useRef(null);
   const scrollRef = useRef(null);
-  const scrollingRef = useRef(false);
   const imagesList = Object.values(images);
   const [width, setWidth] = useState(0);
   const coolDownRef = useRef(false);
@@ -56,7 +55,6 @@ const Services = () => {
 
     setImageLocations(imageLocs);
     scrollRef.current.scrollLeft = imageLocs[index];
-    console.log('updated locs', imageLocs);
   }, [width]);
 
   // image size changed
@@ -78,7 +76,6 @@ const Services = () => {
       let controls;
       if (Math.abs(currentScroll - lastScroll.current) < 1) {
         const target = imageLocations[indexRef.current];
-        console.log(target);
         controls = animate(scrollRef.current.scrollLeft, target, {
           duration: 0.2,
           ease: 'easeInOut',
@@ -91,26 +88,10 @@ const Services = () => {
         lastScroll.current = currentScroll;
         scrollStopTimeout.current = setTimeout(checkIfScrollStopped, 20);
       }
-      // console.log(currentScroll, lastScroll.current);
     };
 
     lastScroll.current = scrollRef.current.scrollLeft;
     scrollStopTimeout.current = setTimeout(checkIfScrollStopped, 20);
-  };
-
-  const handleTouchEnd = (e) => {
-    // if (!dragging) return;
-    // console.log('touchend');
-    // setDragging(false);
-    // //snap
-    // const target = imageLocations[index];
-    // animate(scrollRef.current.scrollLeft, target, {
-    //   duration: 0.2,
-    //   ease: 'easeInOut',
-    //   onUpdate: (latest) => {
-    //     scrollRef.current.scrollLeft = wrap(width, width * 2, latest);
-    //   },
-    // });
   };
 
   const customEvents = !isMobile
@@ -121,23 +102,17 @@ const Services = () => {
           if (events.onMouseDown) events.onMouseDown(e);
         },
       }
-    : {
-        onTouchStart: () => {
-          setDragging(true);
-        },
-      };
+    : {};
 
   useEffect(() => {
     if (!dragging) return;
     // scrollRef.mouseUp wouldn't trigger if mouse start on scroll and end off scroll
     window.addEventListener('mouseup', handleDragEnd);
-    window.addEventListener('touchend', handleTouchEnd);
 
     return () => {
       window.removeEventListener('mouseup', handleDragEnd);
-      window.removeEventListener('mouseup', handleTouchEnd);
     };
-  }, [dragging, handleDragEnd, handleTouchEnd]);
+  }, [dragging, handleDragEnd]);
 
   const handleScroll = useCallback(() => {
     if (!scrollRef.current) return;
@@ -145,12 +120,11 @@ const Services = () => {
     const imageWidth = width / imagesList.length;
 
     // infinite loop mechanic
-    scrollRef.current.scrollLeft = wrap(
-      width,
-      width * 2,
-      scrollRef.current.scrollLeft
-    );
-    console.log(Math.round(scrollRef.current.scrollLeft / imageWidth));
+    const scroll = scrollRef.current.scrollLeft;
+
+    if (scroll <= width * 0.5 || scroll >= width * 2.5) {
+      scrollRef.current.scrollLeft = wrap(width, width * 2, scroll);
+    }
     setIndex(Math.round(scrollRef.current.scrollLeft / imageWidth));
   }, [width, scrollRef]);
 
@@ -159,8 +133,6 @@ const Services = () => {
 
     const observer = new ResizeObserver(() => {
       const contentWidth = imageRef.current.offsetWidth * imagesList.length;
-      console.log('setting new width', contentWidth);
-      console.log('scroll width', scrollRef.current.scrollWidth);
       setWidth(contentWidth);
     });
 
@@ -178,7 +150,7 @@ const Services = () => {
     scrollRef.current.scrollLeft = width;
 
     scrolledMidRef.current = true;
-  }, [width, scrollRef.current]);
+  }, [width]);
 
   const handleLeftScroll = () => {
     if (
@@ -188,13 +160,11 @@ const Services = () => {
       coolDownRef.current
     )
       return;
-    console.log('pressed');
 
     coolDownRef.current = true;
     const container = scrollRef.current;
 
     const target = imageLocations[indexRef.current - 1];
-    console.log(target);
 
     const controls = animate(container.scrollLeft, target, {
       duration: 0.2,
@@ -210,7 +180,6 @@ const Services = () => {
   };
 
   const handleRightScroll = () => {
-    console.log(draggingRef.current);
     if (
       !scrollRef.current ||
       draggingRef.current ||
@@ -260,20 +229,20 @@ const Services = () => {
                 className="relative border border-white/20 p-3 rounded-lg rounded-lg cursor-pointer"
                 onClick={handleLeftScroll}
               >
-                <div className="border-t border-l border-white absolute top-0 left-0 w-3 h-3 absolute"></div>
-                <div className="border-t border-r border-white absolute top-0 right-0 w-3 h-3 absolute"></div>
-                <div className="border-b border-l border-white absolute bottom-0 left-0 w-3 h-3 absolute"></div>
-                <div className="border-b border-r border-white absolute bottom-0 right-0 w-3 h-3 absolute"></div>
+                <div className="border-t border-l border-white absolute top-0 left-0 w-3 h-3"></div>
+                <div className="border-t border-r border-white absolute top-0 right-0 w-3 h-3"></div>
+                <div className="border-b border-l border-white absolute bottom-0 left-0 w-3 h-3"></div>
+                <div className="border-b border-r border-white absolute bottom-0 right-0 w-3 h-3"></div>
                 <FontAwesomeIcon icon={faArrowLeft} className="text-5xl" />
               </div>
               <div
                 className="relative border border-white/20 p-3 rounded-lg rounded-lg cursor-pointer"
                 onClick={handleRightScroll}
               >
-                <div className="border-t border-l border-white absolute top-0 left-0 w-3 h-3 absolute"></div>
-                <div className="border-t border-r border-white absolute top-0 right-0 w-3 h-3 absolute"></div>
-                <div className="border-b border-l border-white absolute bottom-0 left-0 w-3 h-3 absolute"></div>
-                <div className="border-b border-r border-white absolute bottom-0 right-0 w-3 h-3 absolute"></div>
+                <div className="border-t border-l border-white absolute top-0 left-0 w-3 h-3"></div>
+                <div className="border-t border-r border-white absolute top-0 right-0 w-3 h-3"></div>
+                <div className="border-b border-l border-white absolute bottom-0 left-0 w-3 h-3"></div>
+                <div className="border-b border-r border-white absolute bottom-0 right-0 w-3 h-3"></div>
                 <FontAwesomeIcon icon={faArrowRight} className="text-5xl" />
               </div>
             </div>
@@ -291,7 +260,7 @@ const Services = () => {
                 return (
                   <div className="relative flex-none" key={i}>
                     <div
-                      className="absolute text-black bg-white top-10 left-10 p-2 whitespace-nowrap transition-opacity duration-1000 z-10 text-lg font-medium rounded-lg"
+                      className="absolute text-black bg-white top-5 left-10 p-2 whitespace-nowrap transition-opacity duration-700 z-10 text-lg font-medium rounded-lg"
                       style={{
                         opacity: baseIndex === currentBaseIndex ? 1 : 0,
                       }}
@@ -302,7 +271,7 @@ const Services = () => {
                     <img
                       src={src}
                       draggable="false"
-                      className="transition-opacity duration-300 w-150 sm:w-[720px] h-auto rounded-lg  px-2"
+                      className="transition-opacity duration-300 w-[400px] sm:w-[720px] h-auto rounded-lg  px-2"
                       ref={i === allImages.length - 1 ? imageRef : null}
                       style={{
                         opacity: baseIndex === currentBaseIndex ? 1 : 0.2,

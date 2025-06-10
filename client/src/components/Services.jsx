@@ -25,7 +25,7 @@ const Services = () => {
   const imagesList = Object.values(images);
   const [width, setWidth] = useState(0);
   const [index, setIndex] = useState(0);
-  const CLONES = 1; // on one side
+  const CLONES = 4; // on one side
 
   const { events } = useDraggable(scrollRef, {
     decayRate: 0.95,
@@ -49,17 +49,19 @@ const Services = () => {
 
     const imageWidth = width / imagesList.length;
 
-    //
-
-    // if (!refFlags.current.mobileDragging) {
     const scroll = scrollRef.current.scrollLeft;
-    const wrappedScroll = wrap(CLONES * width, width + width * CLONES, scroll);
+
+    const wrappedScroll = wrap(width * CLONES, width * CLONES + width, scroll);
+
+    console.log(scroll, wrappedScroll);
     if (wrappedScroll !== scroll) {
       console.log('wrapped', scroll, wrappedScroll);
     }
 
     if (!refFlags.current.mobileDragging) {
-      scrollRef.current.scrollLeft = wrappedScroll;
+      if (scroll < width || scroll > width * CLONES * 2) {
+        scrollRef.current.scrollLeft = wrappedScroll;
+      }
     }
 
     setIndex(Math.round(wrappedScroll / imageWidth));
@@ -103,9 +105,8 @@ const Services = () => {
         },
       }
     : {
-        ...events,
         onTouchStart: (e) => {
-          console.log('drag set true');
+          console.log('mobile drag start');
           refFlags.current.mobileDragging = true;
         },
       };
@@ -140,14 +141,20 @@ const Services = () => {
     scrollStopTimeout.current = setTimeout(checkIfScrollStopped, 20);
   };
 
-  const handleMobileDragEnd = () => {
+  const handleMobileDragEnd = (e) => {
+    console.log('mobile drag ended', e.type);
+    if (!refFlags.current.mobileDragging) return;
     refFlags.current.mobileDragging = false;
     const scroll = scrollRef.current.scrollLeft;
     scrollRef.current.scrollLeft = wrap(
-      CLONES * width,
-      width + width * CLONES,
+      width * CLONES,
+      width * CLONES + width,
       scroll
     );
+  };
+
+  const handleTouchmove = (e) => {
+    // console.log('touch move');
   };
 
   useEffect(() => {
@@ -158,11 +165,15 @@ const Services = () => {
 
     window.addEventListener('touchend', handleMobileDragEnd);
     window.addEventListener('touchcancel', handleMobileDragEnd);
+    scrollRef.current.addEventListener('touchmove', handleTouchmove, {
+      passive: false,
+    });
 
     return () => {
       window.removeEventListener('mouseup', handleMouseDragEnd);
       window.removeEventListener('touchend', handleMobileDragEnd);
       window.removeEventListener('touchcancel', handleMobileDragEnd);
+      window.removeEventListener('touchmove', handleTouchmove);
     };
   }, [handleMouseDragEnd, handleMobileDragEnd]);
 
@@ -185,7 +196,7 @@ const Services = () => {
   useEffect(() => {
     if (!scrollRef.current || width === 0 || refFlags.current.scrolledMid)
       return;
-    console.log('scroll mid', width);
+    console.log('scroll mid', CLONES * width);
     scrollRef.current.scrollLeft = CLONES * width;
 
     refFlags.current.scrolledMid = true;
@@ -193,12 +204,10 @@ const Services = () => {
 
   const handleLeftScroll = () => {
     if (
-      (!scrollRef.current ||
-        refFlags.current.animatingSnap ||
-        !imageLocations.length ||
-        refFlags,
-      current,
-      refFlags.current.navButtonCoolDown)
+      !scrollRef.current ||
+      refFlags.current.animatingSnap ||
+      !imageLocations.length ||
+      refFlags.current.navButtonCoolDown
     )
       return;
 
@@ -212,8 +221,8 @@ const Services = () => {
       ease: 'easeInOut',
       onUpdate: (latest) => {
         container.scrollLeft = wrap(
-          CLONES * width,
-          width + CLONES * width,
+          width * CLONES,
+          width * CLONES + width,
           latest
         );
       },
@@ -242,7 +251,11 @@ const Services = () => {
       duration: 0.2,
       ease: 'easeInOut',
       onUpdate: (latest) => {
-        container.scrollLeft = wrap(width, width + width * CLONES, latest);
+        container.scrollLeft = wrap(
+          width * CLONES,
+          width * CLONES + width,
+          latest
+        );
       },
     });
 
@@ -298,6 +311,7 @@ const Services = () => {
               ref={scrollRef}
               onScroll={handleScroll}
               {...customEvents}
+              style={{ WebkitOverflowScrolling: 'auto' }}
             >
               {allImages.map((src, i) => {
                 const baseIndex = i % imagesList.length;

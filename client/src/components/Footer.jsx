@@ -61,7 +61,7 @@ const Footer = () => {
             <div className="flex gap-5">
               <a
                 href="mailto:"
-                className="underline p-1 hover-supported:hover:bg-purple text-lg rounded-sm bg-black/5"
+                className="underline p-1 hover:bg-purple text-lg rounded-sm bg-black/5"
               >
                 {EMAIL}
               </a>

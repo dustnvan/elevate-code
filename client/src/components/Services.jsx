@@ -25,7 +25,7 @@ const Services = () => {
   const imagesList = Object.values(images);
   const [width, setWidth] = useState(0);
   const [index, setIndex] = useState(0);
-  const CLONES = 4; // on one side
+  const CLONES = 1; // on one side
 
   const { events } = useDraggable(scrollRef, {
     decayRate: 0.95,
@@ -35,6 +35,15 @@ const Services = () => {
   const indexRef = useRef(index);
   const scrollStopTimeout = useRef(null);
   const lastScroll = useRef(0);
+
+  const wrapScroll = (scroll) => {
+    const wrappedScroll = wrap(width * CLONES, width * CLONES + width, scroll);
+    if (scroll < width || scroll > width * CLONES * 2) {
+      scrollRef.current.scrollLeft = wrappedScroll;
+    } else {
+      scrollRef.current.scrollLeft = scroll;
+    }
+  };
 
   const refFlags = useRef({
     animatingSnap: false,
@@ -49,22 +58,11 @@ const Services = () => {
 
     const imageWidth = width / imagesList.length;
 
-    const scroll = scrollRef.current.scrollLeft;
-
-    const wrappedScroll = wrap(width * CLONES, width * CLONES + width, scroll);
-
-    console.log(scroll, wrappedScroll);
-    if (wrappedScroll !== scroll) {
-      console.log('wrapped', scroll, wrappedScroll);
-    }
-
     if (!refFlags.current.mobileDragging) {
-      if (scroll < width || scroll > width * CLONES * 2) {
-        scrollRef.current.scrollLeft = wrappedScroll;
-      }
+      wrapScroll(scrollRef.current.scrollLeft);
     }
 
-    setIndex(Math.round(wrappedScroll / imageWidth));
+    setIndex(Math.round(scrollRef.current.scrollLeft / imageWidth));
   }, [width, scrollRef]);
 
   // keep ref in sync with state
@@ -113,6 +111,8 @@ const Services = () => {
 
   //snap at the end of inertia from drag
   const handleMouseDragEnd = (e) => {
+    e.preventDefault();
+    console.log('mouse up');
     if (!refFlags.current.mouseDragging) return;
     if (scrollStopTimeout.current) clearTimeout(scrollStopTimeout.current);
     refFlags.current.mouseDragging = false;
@@ -121,19 +121,22 @@ const Services = () => {
     const checkIfScrollStopped = () => {
       const currentScroll = scrollRef.current.scrollLeft;
       let controls;
+
+      console.log(currentScroll, lastScroll.current);
       if (Math.abs(currentScroll - lastScroll.current) < 1) {
+        console.log(indexRef.current);
         const target = imageLocations[indexRef.current];
         controls = animate(scrollRef.current.scrollLeft, target, {
           duration: 0.2,
           ease: 'easeInOut',
           onUpdate: (latest) => {
-            scrollRef.current.scrollLeft = latest;
+            wrapScroll(latest);
           },
         });
         controls.then(() => (refFlags.current.animatingSnap = false));
       } else {
         lastScroll.current = currentScroll;
-        scrollStopTimeout.current = setTimeout(checkIfScrollStopped, 20);
+        scrollStopTimeout.current = setTimeout(checkIfScrollStopped, 50);
       }
     };
 
@@ -212,19 +215,14 @@ const Services = () => {
       return;
 
     refFlags.current.navButtonCoolDown = true;
-    const container = scrollRef.current;
 
     const target = imageLocations[indexRef.current - 1];
 
-    const controls = animate(container.scrollLeft, target, {
+    const controls = animate(scrollRef.current.scrollLeft, target, {
       duration: 0.2,
       ease: 'easeInOut',
       onUpdate: (latest) => {
-        container.scrollLeft = wrap(
-          width * CLONES,
-          width * CLONES + width,
-          latest
-        );
+        wrapScroll(latest);
       },
     });
 
@@ -242,20 +240,15 @@ const Services = () => {
     )
       return;
 
-    const container = scrollRef.current;
     refFlags.current.navButtonCoolDown = true;
 
     const target = imageLocations[indexRef.current + 1];
 
-    const controls = animate(container.scrollLeft, target, {
+    const controls = animate(scrollRef.current.scrollLeft, target, {
       duration: 0.2,
       ease: 'easeInOut',
       onUpdate: (latest) => {
-        container.scrollLeft = wrap(
-          width * CLONES,
-          width * CLONES + width,
-          latest
-        );
+        wrapScroll(latest);
       },
     });
 

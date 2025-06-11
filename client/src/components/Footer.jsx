@@ -25,7 +25,7 @@ const Footer = () => {
   };
 
   return (
-    <div className="p-5 sm:p-20 space-y-20 dark-transition dark:bg-white dark:text-black bg-black text-white max-w-400 mx-auto">
+    <div className="p-5 pb-20 sm:p-20 space-y-20 dark-transition dark:bg-white dark:text-black bg-black text-white max-w-400 mx-auto">
       <header className="flex flex-col items-center bg-black gap-8 sm:gap-10 max-w-250 mx-auto p-5 py-10 sm:p-20 rounded-xl bg-white dark:bg-black dark-transition text-black dark:text-white">
         <h1 className="text-5xl sm:text-7xl font-bold">Have an idea?</h1>
         <p className="text-lg sm:text-xl max-w-180 text-center">

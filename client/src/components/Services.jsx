@@ -24,14 +24,14 @@ const Services = () => {
   const scrollRef = useRef(null);
   const imagesList = Object.values(images);
   const [width, setWidth] = useState(0);
-  const [index, setIndex] = useState(0);
-  const CLONES = 1; // on one side
+  const CLONES = 2; // on one side
 
   const { events } = useDraggable(scrollRef, {
     decayRate: 0.95,
     safeDisplacement: 0,
   });
   const [imageLocations, setImageLocations] = useState([]);
+  const [index, setIndex] = useState(0);
   const indexRef = useRef(index);
   const scrollStopTimeout = useRef(null);
   const lastScroll = useRef(0);
@@ -111,7 +111,6 @@ const Services = () => {
 
   //snap at the end of inertia from drag
   const handleMouseDragEnd = (e) => {
-    e.preventDefault();
     console.log('mouse up');
     if (!refFlags.current.mouseDragging) return;
     if (scrollStopTimeout.current) clearTimeout(scrollStopTimeout.current);
@@ -145,7 +144,6 @@ const Services = () => {
   };
 
   const handleMobileDragEnd = (e) => {
-    console.log('mobile drag ended', e.type);
     if (!refFlags.current.mobileDragging) return;
     refFlags.current.mobileDragging = false;
     const scroll = scrollRef.current.scrollLeft;
@@ -168,9 +166,7 @@ const Services = () => {
 
     window.addEventListener('touchend', handleMobileDragEnd);
     window.addEventListener('touchcancel', handleMobileDragEnd);
-    scrollRef.current.addEventListener('touchmove', handleTouchmove, {
-      passive: false,
-    });
+    scrollRef.current.addEventListener('touchmove', handleTouchmove);
 
     return () => {
       window.removeEventListener('mouseup', handleMouseDragEnd);
